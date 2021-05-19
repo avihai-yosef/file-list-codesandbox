@@ -37,7 +37,7 @@ const FileList = ({ files }: Props) => {
       <table data-testid="table" className={styles.table}>
         <thead>
           <tr>
-            <th></th>
+            <th />
             <th>Name</th>
             <th>Device</th>
             <th>Path</th>
@@ -60,7 +60,7 @@ const FileList = ({ files }: Props) => {
 };
 
 // TODO: extract to seperate file with css
-function SelectedCount({ count }: { selectedCount: number }) {
+function SelectedCount({ count }: { count: number }) {
   return (
     <span data-testid="selected-count">
       {count > 0 ? `Selected ${count}` : "None Selected"}
@@ -69,7 +69,7 @@ function SelectedCount({ count }: { selectedCount: number }) {
 }
 
 // TODO: extract to seperate file with css
-function DownloadButton({ files }: { selectedFiles: File[] }) {
+function DownloadButton({ files }: { files: File[] }) {
   const handleDownload = () => {
     const formattedMessage = files
       .map((f) => `Path: ${f.path}, Device: ${f.device}`)
@@ -79,7 +79,6 @@ function DownloadButton({ files }: { selectedFiles: File[] }) {
   };
   return (
     <button
-      role="button"
       className={styles.downloadBtn}
       disabled={files.length === 0}
       onClick={handleDownload}
@@ -104,10 +103,9 @@ function Row({
       className={styles.row}
       onClick={onClick}
       aria-selected={isSelected}
-      role="row"
     >
       <td>
-        <Checkbox checked={isSelected} />
+        <Checkbox checked={isSelected} readOnly />
       </td>
       <td>{file.name}</td>
       <td>{file.device}</td>

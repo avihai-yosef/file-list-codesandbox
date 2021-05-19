@@ -1,16 +1,19 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, InputHTMLAttributes } from "react";
 
-const Checkbox = (props: HTMLInputElement) => {
+type Props = Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "ref"> & {
+  indeterminate?: boolean;
+}
+
+const Checkbox = (props: Props) => {
   const { indeterminate, ...otherProps } = props;
-  const checkRef = useRef();
+  const checkRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    checkRef.current.indeterminate = indeterminate;
+    checkRef!.current!.indeterminate = !!indeterminate;
   }, [indeterminate]);
 
   return (
-    // hack for getting getByRole to work on tests
-    <input type="checkbox" role="checkbox" ref={checkRef} {...otherProps} />
+    <input type="checkbox" ref={checkRef} {...otherProps} />
   );
 };
 

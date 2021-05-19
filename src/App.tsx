@@ -1,8 +1,9 @@
 import "./styles.css";
 import FileList from "./components/FileList/FileList";
+import {File} from "./types";
 
 export default function App() {
-  const files = [
+  const files: File[] = [
     {
       id: 1,
       name: "smss.exe",

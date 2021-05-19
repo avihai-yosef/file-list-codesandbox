@@ -3,7 +3,7 @@ export type File = {
   name: string;
   device: string;
   path: string;
-  status: FileStatus;
+  status: string;
 };
 
 export enum FileStatus {

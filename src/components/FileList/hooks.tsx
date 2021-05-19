@@ -34,7 +34,7 @@ export const useFileSelection = (files: File[]) => {
   };
 
   return {
-    isSelected: (file) => selected.has(file.id),
+    isSelected: (file: File) => selected.has(file.id),
     toggleAllHandler,
     toggleRowHandler,
     selectionState,

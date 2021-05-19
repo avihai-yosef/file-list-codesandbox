@@ -2,7 +2,6 @@ import React from "react";
 import {
   render,
   fireEvent,
-  waitFor,
   screen,
   getByRole
 } from "@testing-library/react";
@@ -27,24 +26,19 @@ const availableFile = {
 };
 
 const getAllChecboxSelector = () =>
-  screen.getByRole("checkbox", { name: "all-selector" });
+  screen.getByRole("checkbox", { name: "all-selector" }) as HTMLInputElement;
 
 const getSelectedRows = () => screen.queryAllByRole("row", { selected: true });
 
 const getAllRows = () => screen.queryAllByRole("row");
 
 describe("FileList Test case", () => {
-  it("When no files should display empty table", () => {
-    render(<FileList files={[]} />);
-    const rows = getAllRows();
-    expect(rows).toEqual([]);
-  });
   it("Should display list of files", () => {
     const files = [scheduledFile];
     render(<FileList files={files} />);
     // TODO: query by role.
     const rows = getAllRows();
-    expect(rows.length).toEqual(1);
+    expect(rows.length).toEqual(2);
   });
 
   it("Clicking a row should mark the row as selected and checked", () => {
@@ -52,7 +46,7 @@ describe("FileList Test case", () => {
 
     render(<FileList files={files} />);
 
-    const row = getAllRows()[0];
+    const row = getAllRows()[1];
 
     expect(row.getAttribute("aria-selected")).toBe("false");
     expect(getByRole(row, "checkbox").checked).toBe(false);
@@ -72,7 +66,7 @@ describe("FileList Test case", () => {
 
     it("The select-all checkbox should be in a selected state if all items are selected", () => {
       render(<FileList files={[scheduledFile]} />);
-      const row = getAllRows()[0];
+      const row = getAllRows()[1];
       fireEvent.click(row);
 
       const allSelector = getAllChecboxSelector();
@@ -82,7 +76,7 @@ describe("FileList Test case", () => {
 
     it("The select-all checkbox should be in an indeterminate state if some but not all items are selected", () => {
       render(<FileList files={[scheduledFile, availableFile]} />);
-      const row = getAllRows()[0];
+      const row = getAllRows()[1];
       fireEvent.click(row);
 
       const allSelector = getAllChecboxSelector();
@@ -161,16 +155,17 @@ describe("FileList Test case", () => {
       expect(screen.getByRole("button")).not.toHaveAttribute("disabled");
     });
 
-    it("Clicking button should open alert box with selected && available files", async () => {
+    it("Clicking button should open alert box with selected && available files", () => {
       const files = [scheduledFile, availableFile];
 
+      global.alert = jest.fn();
       render(<FileList files={files} />);
-      fireEvent.click(screen.getByText(availableFile.name));
-      await waitFor(() => screen.getByRole("alert"));
 
-      expect(screen.getByRole("alert")).toHaveTextContent(
-        /Targaryen/i
-      );
+      fireEvent.click(screen.getByText(availableFile.name));
+
+      fireEvent.click(screen.getByRole('button'))
+
+      expect(global.alert).toHaveBeenCalledWith("Path: \\Device\\HarddiskVolume2\\Windows\\System32\\netsh.exe, Device: Targaryen");
     });
   });
 });
