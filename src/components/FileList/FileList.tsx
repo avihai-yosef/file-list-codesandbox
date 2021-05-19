@@ -1,27 +1,32 @@
 import React from "react";
 import { File } from ".types";
 import styles from "./FileList.module.css";
+import Checkbox from "../Checkbox/Checkbox";
+import { useFileSelection } from "./hooks";
 
 type Props = {
   files: File[];
 };
 
 const FileList = ({ files }: Props) => {
-  const [selected, setSelected] = React.useState<Set<number>>(new Set());
-
-  const toggleFileSelection = (file: File) => {
-    setSelected((prev) => {
-      if (prev.has(file.id)) {
-        prev.delete(file.id);
-      } else {
-        prev.add(file.id);
-      }
-      return new Set(prev);
-    });
-  };
+  const {
+    isSelected,
+    toggleAllHandler,
+    toggleRowHandler,
+    selectionState
+  } = useFileSelection(files);
 
   return (
     <section>
+      <div>
+        <Checkbox
+          checked={selectionState.all}
+          indeterminate={selectionState.partial}
+          onChange={toggleAllHandler}
+          aria-label="all-selector"
+          className={styles.allSelector}
+        />
+      </div>
       <table data-testid="table" className={styles.table}>
         <thead>
           <tr>
@@ -37,8 +42,8 @@ const FileList = ({ files }: Props) => {
             <Row
               key={file.id}
               file={file}
-              isSelected={selected.has(file.id)}
-              onSelect={toggleFileSelection}
+              isSelected={isSelected(file)}
+              onSelect={toggleRowHandler}
             />
           ))}
         </tbody>
@@ -60,13 +65,12 @@ function Row({
   return (
     <tr
       className={styles.row}
-      data-testid="row"
       onClick={onClick}
       aria-selected={isSelected}
+      role="row"
     >
       <td>
-        {/* hack for getting getByRole to work on tests */}
-        <input role="checkbox" type="checkbox" checked={isSelected} />
+        <Checkbox checked={isSelected} />
       </td>
       <td>{file.name}</td>
       <td>{file.device}</td>

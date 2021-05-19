@@ -1,3 +1,8 @@
+@value left-checkbox-margin: 5px;
+
+.allSelector {
+  margin-left: left-checkbox-margin;
+}
 .table {
   width: 100%;
   text-align: left;
@@ -21,7 +26,8 @@
 
 .table th,
 td {
-  padding: 5px 10px;
+  vertical-align: middle;
+  padding: 0 10px 10px left-checkbox-margin;
 }
 
 .status {
