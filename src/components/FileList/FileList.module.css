@@ -1,14 +1,19 @@
 @value left-checkbox-margin: 5px;
 
-.allSelector {
-  margin-left: left-checkbox-margin;
-  margin-right: 10px;
-}
 
 .toolbar {
   display: flex;
   margin: 10px 0;
   align-items: center;
+}
+
+.downloadBtn {
+  margin-left: 10px;
+}
+
+.allSelector {
+  margin-left: left-checkbox-margin;
+  margin-right: 10px;
 }
 
 .table {
@@ -40,3 +45,5 @@ td {
 .status {
   text-transform: capitalize;
 }
+
+

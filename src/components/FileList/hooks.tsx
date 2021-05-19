@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { File } from ".types";
+import { File } from "../../types";
 
 // TODO: rename to useListSelection (this is a generic logic)
 // TODO: optimize performance using useCallback and useMemo

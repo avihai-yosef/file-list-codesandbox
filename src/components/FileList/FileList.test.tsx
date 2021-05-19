@@ -143,4 +143,34 @@ describe("FileList Test case", () => {
       );
     });
   });
+
+  describe("Download files button", () => {
+    it("Given no available files selected button should be disabled", () => {
+      const files = [scheduledFile, availableFile];
+
+      render(<FileList files={files} />);
+
+      expect(screen.getByRole("button")).toHaveAttribute("disabled");
+    });
+
+    it("Given available files selected button should be enabled", () => {
+      const files = [scheduledFile, availableFile];
+
+      render(<FileList files={files} />);
+      fireEvent.click(screen.getByText(availableFile.name));
+      expect(screen.getByRole("button")).not.toHaveAttribute("disabled");
+    });
+
+    it("Clicking button should open alert box with selected && available files", async () => {
+      const files = [scheduledFile, availableFile];
+
+      render(<FileList files={files} />);
+      fireEvent.click(screen.getByText(availableFile.name));
+      await waitFor(() => screen.getByRole("alert"));
+
+      expect(screen.getByRole("alert")).toHaveTextContent(
+        /Targaryen/i
+      );
+    });
+  });
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { File } from ".types";
+import { File, FileStatus } from "../../types";
 import styles from "./FileList.module.css";
 import Checkbox from "../Checkbox/Checkbox";
 import { useFileSelection } from "./hooks";
@@ -17,6 +17,10 @@ const FileList = ({ files }: Props) => {
     selectedCount
   } = useFileSelection(files);
 
+  const filesForDownload = files.filter(
+    (f) => isSelected(f) && f.status === FileStatus.Available
+  );
+
   return (
     <section>
       <div className={styles.toolbar}>
@@ -28,6 +32,7 @@ const FileList = ({ files }: Props) => {
           className={styles.allSelector}
         />
         <SelectedCount count={selectedCount} />
+        <DownloadButton files={filesForDownload} />
       </div>
       <table data-testid="table" className={styles.table}>
         <thead>
@@ -59,6 +64,26 @@ function SelectedCount({ count }: { selectedCount: number }) {
     <span data-testid="selected-count">
       {count > 0 ? `Selected ${count}` : "None Selected"}
     </span>
+  );
+}
+
+function DownloadButton({ files }: { selectedFiles: File[] }) {
+  const handleDownload = () => {
+    const formattedMessage = files
+      .map((f) => `Path: ${f.path}, Device: ${f.device}`)
+      .join("\n");
+
+    alert(formattedMessage);
+  };
+  return (
+    <button
+      role="button"
+      className={styles.downloadBtn}
+      disabled={files.length === 0}
+      onClick={handleDownload}
+    >
+      Download Selected
+    </button>
   );
 }
 
