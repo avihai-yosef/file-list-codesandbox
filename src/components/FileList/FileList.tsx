@@ -7,6 +7,19 @@ type Props = {
 };
 
 const FileList = ({ files }: Props) => {
+  const [selected, setSelected] = React.useState<Set<number>>(new Set());
+
+  const toggleFileSelection = (file: File) => {
+    setSelected((prev) => {
+      if (prev.has(file.id)) {
+        prev.delete(file.id);
+      } else {
+        prev.add(file.id);
+      }
+      return new Set(prev);
+    });
+  };
+
   return (
     <section>
       <table data-testid="table" className={styles.table}>
@@ -21,7 +34,12 @@ const FileList = ({ files }: Props) => {
         </thead>
         <tbody>
           {files.map((file) => (
-            <Row key={file.id} file={file} />
+            <Row
+              key={file.id}
+              file={file}
+              isSelected={selected.has(file.id)}
+              onSelect={toggleFileSelection}
+            />
           ))}
         </tbody>
       </table>
@@ -29,11 +47,26 @@ const FileList = ({ files }: Props) => {
   );
 };
 
-function Row({ file }: { file: File }) {
+function Row({
+  file,
+  isSelected,
+  onSelect
+}: {
+  file: File;
+  isSelected: boolean;
+  onSelect: (file: File) => void;
+}) {
+  const onClick = () => onSelect(file);
   return (
-    <tr data-testid="row">
+    <tr
+      className={styles.row}
+      data-testid="row"
+      onClick={onClick}
+      aria-selected={isSelected}
+    >
       <td>
-        <input type="checkbox" />
+        {/* hack for getting getByRole to work on tests */}
+        <input role="checkbox" type="checkbox" checked={isSelected} />
       </td>
       <td>{file.name}</td>
       <td>{file.device}</td>
