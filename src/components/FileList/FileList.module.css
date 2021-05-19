@@ -1,0 +1,21 @@
+.table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.table th {
+  background-color: #ffffff;
+  position: sticky;
+  top: 0;
+  font-weight: initial;
+}
+
+.table th,
+td {
+  padding: 5px 10px;
+}
+
+.status {
+  text-transform: capitalize;
+}
