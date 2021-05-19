@@ -13,12 +13,13 @@ const FileList = ({ files }: Props) => {
     isSelected,
     toggleAllHandler,
     toggleRowHandler,
-    selectionState
+    selectionState,
+    selectedCount
   } = useFileSelection(files);
 
   return (
     <section>
-      <div>
+      <div className={styles.toolbar}>
         <Checkbox
           checked={selectionState.all}
           indeterminate={selectionState.partial}
@@ -26,6 +27,7 @@ const FileList = ({ files }: Props) => {
           aria-label="all-selector"
           className={styles.allSelector}
         />
+        <SelectedCount count={selectedCount} />
       </div>
       <table data-testid="table" className={styles.table}>
         <thead>
@@ -51,6 +53,14 @@ const FileList = ({ files }: Props) => {
     </section>
   );
 };
+
+function SelectedCount({ count }: { selectedCount: number }) {
+  return (
+    <span data-testid="selected-count">
+      {count > 0 ? `Selected ${count}` : "None Selected"}
+    </span>
+  );
+}
 
 function Row({
   file,

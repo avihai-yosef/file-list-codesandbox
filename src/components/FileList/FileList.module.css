@@ -2,7 +2,15 @@
 
 .allSelector {
   margin-left: left-checkbox-margin;
+  margin-right: 10px;
 }
+
+.toolbar {
+  display: flex;
+  margin: 10px 0;
+  align-items: center;
+}
+
 .table {
   width: 100%;
   text-align: left;
@@ -26,8 +34,7 @@
 
 .table th,
 td {
-  vertical-align: middle;
-  padding: 0 10px 10px left-checkbox-margin;
+  padding: 10px 0 10px left-checkbox-margin;
 }
 
 .status {
