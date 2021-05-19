@@ -1,5 +1,8 @@
 @value left-checkbox-margin: 5px;
 
+.container {
+  border-radius: 4px;
+}
 
 .toolbar {
   display: flex;
@@ -8,18 +11,19 @@
 }
 
 .downloadBtn {
-  margin-left: 10px;
+  margin-left: 15px;
 }
 
 .allSelector {
   margin-left: left-checkbox-margin;
-  margin-right: 10px;
+  margin-right: 15px;
 }
 
 .table {
   width: 100%;
   text-align: left;
   border-collapse: collapse;
+  border-top: 1px solid rgba(224, 224, 224, 1);
 }
 
 .table th {
@@ -27,23 +31,31 @@
   position: sticky;
   top: 0;
   font-weight: initial;
+  font-size: 16px;
 }
 
-.row[aria-selected="true"] {
-  background-color: bisque;
+.table tr {
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
+}
+
+.row {
+  cursor: pointer;
+  font-size: 14px;
 }
 
 .row:hover {
-  background-color: beige;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.row[aria-selected="true"] {
+  background-color: rgba(220, 0, 78, 0.08);
 }
 
 .table th,
 td {
-  padding: 10px 0 10px left-checkbox-margin;
+  padding: 10px 5px 10px left-checkbox-margin;
 }
 
 .status {
   text-transform: capitalize;
 }
-
-

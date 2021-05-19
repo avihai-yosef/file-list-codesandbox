@@ -22,7 +22,7 @@ const FileList = ({ files }: Props) => {
   );
 
   return (
-    <section>
+    <div className={styles.container}>
       <div className={styles.toolbar}>
         <Checkbox
           checked={selectionState.all}
@@ -55,10 +55,11 @@ const FileList = ({ files }: Props) => {
           ))}
         </tbody>
       </table>
-    </section>
+    </div>
   );
 };
 
+// TODO: extract to seperate file with css
 function SelectedCount({ count }: { selectedCount: number }) {
   return (
     <span data-testid="selected-count">
@@ -67,6 +68,7 @@ function SelectedCount({ count }: { selectedCount: number }) {
   );
 }
 
+// TODO: extract to seperate file with css
 function DownloadButton({ files }: { selectedFiles: File[] }) {
   const handleDownload = () => {
     const formattedMessage = files
