@@ -39,7 +39,6 @@
 }
 
 .row {
-  cursor: pointer;
   font-size: 14px;
 }
 
@@ -49,6 +48,10 @@
 
 .row[aria-selected="true"] {
   background-color: rgba(220, 0, 78, 0.08);
+}
+
+.row[aria-disabled="false"] {
+  cursor: pointer;
 }
 
 .table th,

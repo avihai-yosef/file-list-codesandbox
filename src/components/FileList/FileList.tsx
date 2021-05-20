@@ -17,9 +17,7 @@ const FileList = ({ files }: Props) => {
     selectedCount
   } = useFileSelection(files);
 
-  const filesForDownload = files.filter(
-    (f) => isSelected(f) && f.status === FileStatus.Available
-  );
+  const filesForDownload = files.filter((f) => isSelected(f));
 
   return (
     <div className={styles.container}>
@@ -32,7 +30,7 @@ const FileList = ({ files }: Props) => {
           className={styles.allSelector}
         />
         <SelectedCount count={selectedCount} />
-        <DownloadButton files={filesForDownload} />
+        <DownloadButton files={filesForDownload} isSelected={isSelected} />
       </div>
       <table data-testid="table" className={styles.table}>
         <thead>
@@ -49,7 +47,8 @@ const FileList = ({ files }: Props) => {
             <Row
               key={file.id}
               file={file}
-              isSelected={isSelected(file)}
+              selected={isSelected(file)}
+              disabled={file.status !== FileStatus.Available}
               onSelect={toggleRowHandler}
             />
           ))}
@@ -90,22 +89,25 @@ function DownloadButton({ files }: { files: File[] }) {
 
 function Row({
   file,
-  isSelected,
+  selected,
+  disabled,
   onSelect
 }: {
   file: File;
-  isSelected: boolean;
+  selected: boolean;
+  disabled: boolean;
   onSelect: (file: File) => void;
 }) {
-  const onClick = () => onSelect(file);
+  const onClick = () => !disabled && onSelect(file);
   return (
     <tr
       className={styles.row}
       onClick={onClick}
-      aria-selected={isSelected}
+      aria-selected={selected}
+      aria-disabled={disabled}
     >
       <td>
-        <Checkbox checked={isSelected} readOnly />
+        <Checkbox checked={selected} disabled={disabled} readOnly />
       </td>
       <td>{file.name}</td>
       <td>{file.device}</td>
