@@ -62,3 +62,11 @@ td {
 .status {
   text-transform: capitalize;
 }
+
+.availableIndicator {
+  background-color: limegreen;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+}

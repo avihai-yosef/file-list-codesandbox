@@ -39,6 +39,7 @@ const FileList = ({ files }: Props) => {
             <th>Name</th>
             <th>Device</th>
             <th>Path</th>
+            <th aria-hidden={true} />
             <th>Status</th>
           </tr>
         </thead>
@@ -95,21 +96,22 @@ function Row({
   selected: boolean;
   onSelect: (file: File) => void;
 }) {
-  const onClick = () => !disabled && onSelect(file);
-  const disabled = file.status !== FileStatus.Available
+  const isAvailable = file.status === FileStatus.Available
+  const onClick = () => isAvailable && onSelect(file);
   return (
     <tr
       className={styles.row}
       onClick={onClick}
       aria-selected={selected}
-      aria-disabled={disabled}
+      aria-disabled={!isAvailable}
     >
       <td>
-        <Checkbox checked={selected} disabled={disabled} readOnly />
+        <Checkbox checked={selected} disabled={!isAvailable} readOnly />
       </td>
       <td>{file.name}</td>
       <td>{file.device}</td>
       <td>{file.path}</td>
+      <td><span className={isAvailable ? styles.availableIndicator : ""} /></td>
       <td className={styles.status}>{file.status}</td>
     </tr>
   );
