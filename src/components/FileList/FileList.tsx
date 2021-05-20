@@ -3,6 +3,7 @@ import { File, FileStatus } from "../../types";
 import styles from "./FileList.module.css";
 import Checkbox from "../Checkbox/Checkbox";
 import { useFileSelection } from "./hooks";
+import Button from "../Button/Button";
 
 type Props = {
   files: File[];
@@ -58,7 +59,7 @@ const FileList = ({ files }: Props) => {
   );
 };
 
-// TODO: extract to seperate file with css
+// TODO: extract to seperate file
 function SelectedCount({ count }: { count: number }) {
   return (
     <span data-testid="selected-count">
@@ -67,7 +68,6 @@ function SelectedCount({ count }: { count: number }) {
   );
 }
 
-// TODO: extract to seperate file with css
 function DownloadButton({ files }: { files: File[] }) {
   const handleDownload = () => {
     const formattedMessage = files
@@ -77,13 +77,9 @@ function DownloadButton({ files }: { files: File[] }) {
     alert(formattedMessage);
   };
   return (
-    <button
-      className={styles.downloadBtn}
-      disabled={files.length === 0}
-      onClick={handleDownload}
-    >
-      <i className="fa fa-download" /> Download Selected
-    </button>
+      <Button className={styles.downloadBtn} onClick={handleDownload} disabled={files.length === 0}>
+        <i className="fa fa-download" /> Download Selected
+      </Button>
   );
 }
 

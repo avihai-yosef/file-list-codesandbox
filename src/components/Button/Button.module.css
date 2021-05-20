@@ -1,0 +1,17 @@
+.root {
+    background-color: white;
+    border: none;
+    padding: 12px 16px;
+    outline: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.root:disabled {
+    cursor: default;
+    opacity: 0.7;
+}
+
+.root:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
