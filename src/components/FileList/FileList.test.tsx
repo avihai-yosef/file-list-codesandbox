@@ -17,12 +17,20 @@ const scheduledFile = {
   status: "scheduled"
 };
 
-const availableFile = {
+const availableFile1 = {
   id: 2,
   name: "netsh.exe",
   device: "Targaryen",
   path: "\\Device\\HarddiskVolume2\\Windows\\System32\\netsh.exe",
   status: "available"
+};
+
+const availableFile2 = {
+      id: 3,
+      name: "uxtheme.dll",
+      device: "Lannister",
+      path: "\\Device\\HarddiskVolume1\\Windows\\System32\\uxtheme.dll",
+      status: "available"
 };
 
 const getAllChecboxSelector = () =>
@@ -42,7 +50,7 @@ describe("FileList Test case", () => {
   });
 
   it("Clicking a row should mark the row as selected and checked", () => {
-    const files = [scheduledFile];
+    const files = [availableFile1];
 
     render(<FileList files={files} />);
 
@@ -58,14 +66,14 @@ describe("FileList Test case", () => {
 
   describe("Select all checkbox", () => {
     it("The select-all checkbox should be in an unselected state if no items are selected", () => {
-      render(<FileList files={[scheduledFile]} />);
+      render(<FileList files={[availableFile1]} />);
       const allSelector = getAllChecboxSelector();
       expect(allSelector.checked).toBe(false);
       expect(allSelector.indeterminate).toBe(false);
     });
 
     it("The select-all checkbox should be in a selected state if all items are selected", () => {
-      render(<FileList files={[scheduledFile]} />);
+      render(<FileList files={[availableFile1]} />);
       const row = getAllRows()[1];
       fireEvent.click(row);
 
@@ -74,8 +82,8 @@ describe("FileList Test case", () => {
       expect(allSelector.indeterminate).toBe(false);
     });
 
-    it("The select-all checkbox should be in an indeterminate state if some but not all items are selected", () => {
-      render(<FileList files={[scheduledFile, availableFile]} />);
+    it("The select-all checkbox should be in an indeterminate state if some but not all available items are selected", () => {
+      render(<FileList files={[availableFile1, availableFile2, scheduledFile]} />);
       const row = getAllRows()[1];
       fireEvent.click(row);
 
@@ -84,8 +92,8 @@ describe("FileList Test case", () => {
       expect(allSelector.indeterminate).toBe(true);
     });
 
-    it("Clicking the select-all checkbox should select all items if none or some are selected", () => {
-      const files = [scheduledFile, availableFile];
+    it("Clicking the select-all checkbox should select all available items if none or some are selected", () => {
+      const files = [availableFile1, availableFile2, scheduledFile];
 
       render(<FileList files={files} />);
 
@@ -94,11 +102,11 @@ describe("FileList Test case", () => {
       fireEvent.click(allSelector);
 
       expect(allSelector.checked).toBe(true);
-      expect(getSelectedRows().length).toBe(files.length);
+      expect(getSelectedRows().length).toBe(2);
     });
 
     it("Clicking the select-all checkbox should de-select all items if all are currently selected", () => {
-      const files = [scheduledFile, availableFile];
+      const files = [scheduledFile, availableFile1];
 
       render(<FileList files={files} />);
 
@@ -106,7 +114,7 @@ describe("FileList Test case", () => {
 
       fireEvent.click(allSelector);
 
-      expect(getSelectedRows().length).toBe(files.length);
+      expect(getSelectedRows().length).toBe(1);
 
       fireEvent.click(allSelector);
 
@@ -118,7 +126,7 @@ describe("FileList Test case", () => {
 
   describe("Selected counter", () => {
     it("Given 2 item selected should display Selected 2", () => {
-      const files = [scheduledFile, availableFile];
+      const files = [availableFile1, availableFile2];
       render(<FileList files={files} />);
 
       fireEvent.click(getAllChecboxSelector());
@@ -140,7 +148,7 @@ describe("FileList Test case", () => {
 
   describe("Download files button", () => {
     it("Given no available files selected button should be disabled", () => {
-      const files = [scheduledFile, availableFile];
+      const files = [scheduledFile, availableFile1];
 
       render(<FileList files={files} />);
 
@@ -148,24 +156,24 @@ describe("FileList Test case", () => {
     });
 
     it("Given available files selected button should be enabled", () => {
-      const files = [scheduledFile, availableFile];
+      const files = [scheduledFile, availableFile1];
 
       render(<FileList files={files} />);
-      fireEvent.click(screen.getByText(availableFile.name));
+      fireEvent.click(screen.getByText(availableFile1.name));
       expect(screen.getByRole("button")).not.toHaveAttribute("disabled");
     });
 
     it("Clicking button should open alert box with selected && available files", () => {
-      const files = [scheduledFile, availableFile];
+      const files = [scheduledFile, availableFile1];
 
       global.alert = jest.fn();
       render(<FileList files={files} />);
 
-      fireEvent.click(screen.getByText(availableFile.name));
+      fireEvent.click(screen.getByText(availableFile1.name));
 
       fireEvent.click(screen.getByRole('button'))
 
-      expect(global.alert).toHaveBeenCalledWith("Path: \\Device\\HarddiskVolume2\\Windows\\System32\\netsh.exe, Device: Targaryen");
+      expect(global.alert).toHaveBeenCalledWith(`Path: ${availableFile1.path}, Device: ${availableFile1.device}`);
     });
   });
 });

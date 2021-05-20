@@ -30,7 +30,7 @@ const FileList = ({ files }: Props) => {
           className={styles.allSelector}
         />
         <SelectedCount count={selectedCount} />
-        <DownloadButton files={filesForDownload} isSelected={isSelected} />
+        <DownloadButton files={filesForDownload} />
       </div>
       <table data-testid="table" className={styles.table}>
         <thead>
@@ -48,7 +48,6 @@ const FileList = ({ files }: Props) => {
               key={file.id}
               file={file}
               selected={isSelected(file)}
-              disabled={file.status !== FileStatus.Available}
               onSelect={toggleRowHandler}
             />
           ))}
@@ -90,15 +89,14 @@ function DownloadButton({ files }: { files: File[] }) {
 function Row({
   file,
   selected,
-  disabled,
   onSelect
 }: {
   file: File;
   selected: boolean;
-  disabled: boolean;
   onSelect: (file: File) => void;
 }) {
   const onClick = () => !disabled && onSelect(file);
+  const disabled = file.status !== FileStatus.Available
   return (
     <tr
       className={styles.row}

@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { File } from "../../types";
+import {useMemo, useState } from "react";
+import {File, FileStatus} from "../../types";
 
 // TODO: rename to useListSelection (this is a generic logic)
 // TODO: optimize performance using useCallback and useMemo
 export const useFileSelection = (files: File[]) => {
   const [selected, setSelected] = useState<Set<number>>(new Set());
-
+  const availableFiles = useMemo(() => files.filter(f => f.status === FileStatus.Available), [files])
   const toggleRowHandler = (file: File) => {
     setSelected((prev) => {
       if (prev.has(file.id)) {
@@ -21,15 +21,15 @@ export const useFileSelection = (files: File[]) => {
 
   const selectionState = {
     none: selectedCount === 0,
-    partial: selectedCount > 0 && selectedCount < files.length,
-    all: selectedCount === files.length
+    partial: selectedCount > 0 && selectedCount < availableFiles.length,
+    all: selectedCount === availableFiles.length
   };
 
   const toggleAllHandler = () => {
     if (selectionState.all) {
       setSelected(new Set());
     } else {
-      setSelected(new Set(files.map((f) => f.id)));
+      setSelected(new Set(availableFiles.map((f) => f.id)));
     }
   };
 
