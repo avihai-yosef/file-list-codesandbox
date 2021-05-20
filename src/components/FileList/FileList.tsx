@@ -82,7 +82,7 @@ function DownloadButton({ files }: { files: File[] }) {
       disabled={files.length === 0}
       onClick={handleDownload}
     >
-      Download Selected
+      <i className="fa fa-download" /> Download Selected
     </button>
   );
 }
@@ -111,7 +111,7 @@ function Row({
       <td>{file.name}</td>
       <td>{file.device}</td>
       <td>{file.path}</td>
-      <td><span className={isAvailable ? styles.availableIndicator : ""} /></td>
+      <td><div className={isAvailable ? styles.availableIndicator : ""} /></td>
       <td className={styles.status}>{file.status}</td>
     </tr>
   );
